@@ -1,3 +1,4 @@
+import { logger } from "mcp-framework";
 import { config } from "../config.js";
 
 export class TestRailError extends Error {
@@ -171,9 +172,9 @@ export class TestRailClient {
       };
 
       if (config.logging.format === "json") {
-        console.log(JSON.stringify(logData));
+        logger.log(JSON.stringify(logData));
       } else {
-        console.log(
+        logger.log(
           `[${logData.timestamp}] TestRail Request (attempt ${logData.attempt}): ${logData.method} ${url}`
         );
       }
@@ -191,9 +192,9 @@ export class TestRailClient {
       };
 
       if (config.logging.format === "json") {
-        console.log(JSON.stringify(logData));
+        logger.log(JSON.stringify(logData));
       } else {
-        console.log(
+        logger.log(
           `[${logData.timestamp}] TestRail Response (attempt ${logData.attempt}): ${logData.status} ${logData.statusText}`
         );
       }
@@ -211,9 +212,9 @@ export class TestRailClient {
       };
 
       if (config.logging.format === "json") {
-        console.log(JSON.stringify(logData));
+        logger.log(JSON.stringify(logData));
       } else {
-        console.log(
+        logger.log(
           `[${logData.timestamp}] TestRail Success (attempt ${logData.attempt}): ${url} (${logData.dataSize} bytes)`
         );
       }
@@ -231,9 +232,9 @@ export class TestRailClient {
     };
 
     if (config.logging.format === "json") {
-      console.error(JSON.stringify(logData));
+      logger.error(JSON.stringify(logData));
     } else {
-      console.error(
+      logger.error(
         `[${logData.timestamp}] TestRail Error (attempt ${logData.attempt}): ${error.constructor.name} - ${error.message}`
       );
     }
