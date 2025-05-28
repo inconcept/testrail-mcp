@@ -1,14 +1,19 @@
 import { MCPServer, MCPServerConfig } from "mcp-framework";
-import { config } from "./config.js";
 import { dirname, resolve } from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
+import { config } from "./config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const packageFile = fs.readFileSync(resolve(__dirname, "../package.json"), "utf8");
+const packageJson = JSON.parse(packageFile);
+const version = packageJson.version;
+
 async function main() {
   try {
-    console.error("🔧 TestRail MCP Server v1.0.0");
+    console.error(`🔧 TestRail MCP Server v${version}`);
     console.error("📋 Initializing server for QA workflow enhancement...");
 
     const transport: MCPServerConfig["transport"] =
@@ -25,7 +30,7 @@ async function main() {
 
     const server = new MCPServer({
       name: "testrail-mcp",
-      version: "1.0.0",
+      version,
       transport,
       basePath: resolve(__dirname, "index.js"),
     });
