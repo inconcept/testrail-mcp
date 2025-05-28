@@ -1,5 +1,10 @@
 import { MCPServer, MCPServerConfig } from "mcp-framework";
 import { config } from "./config.js";
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 async function main() {
   try {
@@ -22,6 +27,7 @@ async function main() {
       name: "testrail-mcp",
       version: "1.0.0",
       transport,
+      basePath: resolve(__dirname, "index.js"),
     });
 
     await server.start();
