@@ -1,0 +1,61 @@
+{
+  "name": "@inconcept-labs/testrail-mcp",
+  "main": "./dist/index.js",
+  "version": "1.0.0",
+  "description": "MCP Server for TestRail",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+  "author": {
+    "name": "InConcept Labs"
+  },
+  "bin": {
+    "testrail-mcp": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "homepage": "https://github.com/inconcept/testrail-mcp",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inconcept/testrail-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/inconcept/testrail-mcp/issues"
+  },
+  "scripts": {
+    "build": "tsc && mcp-build",
+    "start": "node dist/index.js",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/parser": "^8.29.1",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "globals": "^16.0.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.19.4",
+    "typescript-eslint": "^8.29.1"
+  },
+  "peerDependencies": {
+    "@valibot/to-json-schema": "^1.0.0",
+    "effect": "^3.14.4",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "mcp-framework": "^0.2.2",
+    "zod": "^3.24.2"
+  },
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6"
+}
