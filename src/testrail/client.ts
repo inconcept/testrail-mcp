@@ -1,4 +1,3 @@
-import { logger } from "mcp-framework";
 import { config } from "../config.js";
 
 export class TestRailError extends Error {
@@ -66,23 +65,15 @@ export class TestRailClient {
 
     for (let attempt = 0; attempt <= this.retryAttempts; attempt++) {
       try {
-        this.logRequest(url.toString(), requestOptions, attempt);
-
         const response = await fetch(url.toString(), requestOptions);
-
-        this.logResponse(response, attempt);
 
         await this.handleResponseErrors(response);
 
         const data = await response.json();
 
-        this.logSuccess(url.toString(), data, attempt);
-
         return data;
       } catch (error) {
         lastError = error as Error;
-
-        this.logError(url.toString(), error as Error, attempt);
 
         if (
           error instanceof TestRailAuthError ||
@@ -159,85 +150,6 @@ export class TestRailClient {
 
   private delay(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  private logRequest(url: string, options: RequestInit, attempt: number): void {
-    if (config.logging.level === "debug") {
-      const logData = {
-        type: "testrail_request",
-        url,
-        method: options.method || "GET",
-        attempt: attempt + 1,
-        timestamp: new Date().toISOString(),
-      };
-
-      if (config.logging.format === "json") {
-        logger.log(JSON.stringify(logData));
-      } else {
-        logger.log(
-          `[${logData.timestamp}] TestRail Request (attempt ${logData.attempt}): ${logData.method} ${url}`
-        );
-      }
-    }
-  }
-
-  private logResponse(response: Response, attempt: number): void {
-    if (config.logging.level === "debug") {
-      const logData = {
-        type: "testrail_response",
-        status: response.status,
-        statusText: response.statusText,
-        attempt: attempt + 1,
-        timestamp: new Date().toISOString(),
-      };
-
-      if (config.logging.format === "json") {
-        logger.log(JSON.stringify(logData));
-      } else {
-        logger.log(
-          `[${logData.timestamp}] TestRail Response (attempt ${logData.attempt}): ${logData.status} ${logData.statusText}`
-        );
-      }
-    }
-  }
-
-  private logSuccess(url: string, data: any, attempt: number): void {
-    if (["debug", "info"].includes(config.logging.level)) {
-      const logData = {
-        type: "testrail_success",
-        url,
-        dataSize: JSON.stringify(data).length,
-        attempt: attempt + 1,
-        timestamp: new Date().toISOString(),
-      };
-
-      if (config.logging.format === "json") {
-        logger.log(JSON.stringify(logData));
-      } else {
-        logger.log(
-          `[${logData.timestamp}] TestRail Success (attempt ${logData.attempt}): ${url} (${logData.dataSize} bytes)`
-        );
-      }
-    }
-  }
-
-  private logError(url: string, error: Error, attempt: number): void {
-    const logData = {
-      type: "testrail_error",
-      url,
-      error: error.message,
-      errorType: error.constructor.name,
-      attempt: attempt + 1,
-      timestamp: new Date().toISOString(),
-    };
-
-    if (config.logging.format === "json") {
-      logger.error(JSON.stringify(logData));
-    } else {
-      logger.error(
-        `[${logData.timestamp}] TestRail Error (attempt ${logData.attempt}): ${error.constructor.name} - ${error.message}`
-      );
-    }
   }
 
   private createBasicAuthHeader(username: string, apiKey: string): string {
