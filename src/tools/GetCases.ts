@@ -51,7 +51,7 @@ class GetCasesTool extends MCPTool<GetCasesInput> {
       description: "limit to find the test cases",
     },
     offset: {
-      type: z.number().int().positive().optional(),
+      type: z.number().int().nonnegative().optional(),
       description: "offset to find the test cases",
     },
   };
